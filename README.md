@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Overview:
 
 Add custom taxonomy to woocommerce exporter importer:
