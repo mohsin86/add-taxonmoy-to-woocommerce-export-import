@@ -22,17 +22,17 @@ class import_custom_taxonmoy
         $this->tax_domain = $tax_domain;
 
         // Register the 'Custom Column' column in the importer.
-        add_filter('woocommerce_csv_product_import_mapping_options', array($this, 'kia_map_columns'));
+        add_filter('woocommerce_csv_product_import_mapping_options', array($this, 'map_columns'));
 
         // Add automatic mapping support for custom columns.
-        add_filter('woocommerce_csv_product_import_mapping_default_columns', array($this, 'kia_add_columns_to_mapping_screen'));
+        add_filter('woocommerce_csv_product_import_mapping_default_columns', array($this, 'add_columns_to_mapping_screen'));
 
 
         // Decode data items and parse string NAME.
-        add_filter('woocommerce_product_importer_parsed_data', array($this, 'kia_parse_taxonomy_string'), 10, 2);
+        add_filter('woocommerce_product_importer_parsed_data', array($this, 'parse_taxonomy_string'), 10, 2);
 
         //Set taxonomy.
-        add_filter('woocommerce_product_import_inserted_product_object', array($this, 'kia_set_taxonomy'), 10, 2);
+        add_filter('woocommerce_product_import_inserted_product_object', array($this, 'set_taxonomy'), 10, 2);
     }
 
 
@@ -42,7 +42,7 @@ class import_custom_taxonmoy
      * @param array $columns
      * @return array  $columns
      */
-    function kia_map_columns($columns)
+    function map_columns($columns)
     {
         $columns[$this->taxonomies_id] = __($this->taxonomies_name, $this->tax_domain);
         return $columns;
@@ -54,7 +54,7 @@ class import_custom_taxonmoy
      * @param array $columns
      * @return array  $columns
      */
-    function kia_add_columns_to_mapping_screen($columns)
+    function add_columns_to_mapping_screen($columns)
     {
 
         $columns[__($this->taxonomies_name, $this->tax_domain)] = $this->taxonomies_id;
@@ -72,7 +72,7 @@ class import_custom_taxonmoy
      * @param WC_Product_CSV_Importer $importer
      * @return array
      */
-    function kia_parse_taxonomy_string($parsed_data, $importer)
+    function parse_taxonomy_string($parsed_data, $importer)
     {
 
         if (!empty($parsed_data[$this->taxonomies_id])) {
@@ -105,7 +105,7 @@ class import_custom_taxonmoy
      * @param array $parsed_data
      * @return array
      */
-    function kia_set_taxonomy($product, $data)
+    function set_taxonomy($product, $data)
     {
 
         if (is_a($product, 'WC_Product')) {

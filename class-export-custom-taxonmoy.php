@@ -22,12 +22,12 @@ class export_custom_taxonmoy {
         $this->tax_domain = $tax_domain;
 
         // Add CSV columns name/Header Name for exporting extra data.
-        add_filter('woocommerce_product_export_column_names', array($this, 'kia_add_columns'));
-        add_filter('woocommerce_product_export_product_default_columns', array($this, 'kia_add_columns'));
+        add_filter('woocommerce_product_export_column_names', array($this, 'add_columns'));
+        add_filter('woocommerce_product_export_product_default_columns', array($this, 'add_columns'));
 
         $this->content_data_filter = 'woocommerce_product_export_product_column_' . $this->taxonomies_id;
         // contents data column .
-        add_filter($this->content_data_filter, array($this, 'kia_export_taxonomy'), 10, 2);
+        add_filter($this->content_data_filter, array($this, 'export_taxonomy'), 10, 2);
     }
 
     /**
@@ -36,7 +36,7 @@ class export_custom_taxonmoy {
      * @param array $columns
      * @return array  $columns
      */
-    public function kia_add_columns($columns)
+    public function add_columns($columns)
     {
         $columns[$this->taxonomies_id] = __($this->taxonomies_name, $this->tax_domain);
         return $columns;
@@ -49,7 +49,7 @@ class export_custom_taxonmoy {
      * @param WC_Product $product
      * @return mixed       $value
      */
-    public function kia_export_taxonomy($value, $product)
+    public function export_taxonomy($value, $product)
     {
 
         $terms = get_the_terms($product->get_ID(), $this->taxonomies_id);
